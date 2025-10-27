@@ -1,0 +1,44 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package core;
+
+import java.awt.CardLayout;
+import java.awt.Component;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+/**
+ *
+ * @author Gilmar Gonzales
+ */
+public abstract class Controller {
+
+    protected static final JFrame mainFrame = new JFrame("Ferreteria Santa Rosa de Sigues");
+    private static final JPanel viewsPanel = new JPanel(new CardLayout());
+
+    static {
+        mainFrame.setContentPane(viewsPanel);
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setSize(800, 500);
+        mainFrame.setLocationRelativeTo(null);
+    }
+
+    public abstract void run();
+
+    public static void addView(String name, View view) {
+        viewsPanel.add((Component) view, name);
+    }
+
+    public static void loadView(String name) {
+        CardLayout cl = (CardLayout) viewsPanel.getLayout();
+        cl.show(viewsPanel, name);
+        viewsPanel.revalidate();
+        viewsPanel.repaint();
+    }
+
+    protected static void showMainFrame() {
+        mainFrame.setVisible(true);
+    }
+}
