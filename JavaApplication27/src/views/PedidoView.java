@@ -74,7 +74,6 @@ public class PedidoView extends JPanel implements View {
         btnVolver.setBounds(570, 340, 180, 30);
         add(btnVolver);
 
-        // Área informativa (pedido final emitido)
         txtInfoPedido = new JTextArea();
         JScrollPane scrollInfo = new JScrollPane(txtInfoPedido);
         scrollInfo.setBounds(20, 380, 700, 80);

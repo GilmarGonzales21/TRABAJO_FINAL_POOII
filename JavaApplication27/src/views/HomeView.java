@@ -67,6 +67,5 @@ public class HomeView extends JPanel implements View {
 
     @Override
     public void update(Model model, Object data) {
-        // no usamos notificación reactiva todavía
     }
 }
