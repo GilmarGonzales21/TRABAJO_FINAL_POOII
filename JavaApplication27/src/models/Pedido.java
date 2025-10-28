@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author ASUS
  */
-ublic class Pedido {
+public class Pedido {
 
     private static int contador = 1;
 

@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package Main;
-
+import controllers.HomeController;
 /**
  *
  * @author gilma
@@ -14,12 +14,7 @@ public class main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-            
-
-    public static void main(String[] args) {
-        HomeController app = new HomeController();
+    HomeController app = new HomeController();
         app.run();
     }
-}
-
 }
