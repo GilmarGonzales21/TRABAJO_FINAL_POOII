@@ -41,18 +41,21 @@ public class BoletaView extends JPanel implements View {
         btnVolver.addActionListener(e -> {
             core.Controller.loadView("HomeView");
         });
+         cargarBoleta();
+    }
 
-        btnActualizar.addActionListener(e -> {
+        private void cargarBoleta() {
             VentaController vc = StaticAccess.venta();
             if (vc.getBoletaActual() != null) {
                 txtBoleta.setText(vc.getBoletaActual().toString());
             } else {
                 txtBoleta.setText("No hay boleta emitida aún.");
             }
-        });
-    }
+        }
+    
 
     @Override
     public void update(Model model, Object data) {
-    }
+         cargarBoleta();
+    }   
 }

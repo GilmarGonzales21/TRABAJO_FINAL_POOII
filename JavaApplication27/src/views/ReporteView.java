@@ -10,8 +10,10 @@ import core.Model;
 public class ReporteView extends JPanel implements View {
 
     private JTextArea txtReporte;
+    private ReporteController reporteController;
 
     public ReporteView(ReporteController reporteController) {
+        this.reporteController = reporteController;
         setLayout(null);
 
         JLabel lbl = new JLabel("Reporte de Ventas (Sesión Actual)");
@@ -39,9 +41,15 @@ public class ReporteView extends JPanel implements View {
         btnVolver.addActionListener(e -> {
             core.Controller.loadView("HomeView");
         });
+        cargarReporte();
+    }
+    private void cargarReporte() {
+        String resumen = reporteController.generarResumen(StaticAccess.venta());
+        txtReporte.setText(resumen);
     }
 
     @Override
     public void update(Model model, Object data) {
+        cargarReporte();
     }
 }

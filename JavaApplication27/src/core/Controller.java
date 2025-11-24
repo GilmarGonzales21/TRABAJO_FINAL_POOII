@@ -31,9 +31,15 @@ public abstract class Controller {
     public static void loadView(String name) {
         CardLayout cl = (CardLayout) viewsPanel.getLayout();
         cl.show(viewsPanel, name);
+         for (Component comp : viewsPanel.getComponents()) {
+            if (comp.isVisible() && comp instanceof View view) {
+                view.update(null, null);
+             }
+        }
         viewsPanel.revalidate();
         viewsPanel.repaint();
     }
+
 
     protected static void showMainFrame() {
         mainFrame.setVisible(true);

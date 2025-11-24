@@ -66,6 +66,5 @@ public class AlmacenView extends JPanel implements View{
     }
     @Override
     public void update(Model model, Object data) {
-    }
-    
+    }  
 }

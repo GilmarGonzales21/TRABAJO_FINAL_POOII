@@ -4,16 +4,18 @@
  */
 package Main;
 import controllers.HomeController;
+import javax.swing.UIManager;
 /**
  *
  * @author gilma
  */
 public class main {
-
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     HomeController app = new HomeController();
         app.run();
     }
