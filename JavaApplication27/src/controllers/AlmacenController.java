@@ -26,4 +26,4 @@ public class AlmacenController extends Controller{
     public List<Almacen> getAlmacenes() {
         return almacenes;
     }
-}
+}   
