@@ -11,10 +11,12 @@ import views.PedidoView;
  *
  * @author gilma
  */
-public class PedidoController extends Controller{
-     private PedidoView pedidoView;
+public class PedidoController extends Controller {
+    private PedidoView pedidoView;
     private VentaController ventaController; 
     private Pedido pedidoActual;             
+
+    private MetodoPago metodoPago; // Interfaz
 
     public PedidoController(VentaController ventaController) {
         this.ventaController = ventaController;
@@ -28,6 +30,11 @@ public class PedidoController extends Controller{
 
     public Pedido getPedidoActual() {
         return pedidoActual;
+    }
+
+    // Método para establecer el tipo de pago
+    public void setMetodoPago(MetodoPago metodoPago) {
+        this.metodoPago = metodoPago;
     }
 
     public void confirmarPedido(String cliente, String direccionEntrega, boolean requiereEnvio) {
@@ -50,6 +57,13 @@ public class PedidoController extends Controller{
             // Reducir stock de cada producto vendido
             for (ItemCarrito it : pedidoActual.getItemsPedido()) {
                 it.getProducto().reducirStock(it.getCantidad());
+            }
+
+            if (metodoPago != null) {
+                // Realizamos el pago a través de la interfaz
+                metodoPago.realizarPago(pedidoActual.getTotalPedido());
+            } else {
+                throw new IllegalAccessException("No se ha seleccionado un metodo de pago");
             }
 
             JOptionPane.showMessageDialog(null,

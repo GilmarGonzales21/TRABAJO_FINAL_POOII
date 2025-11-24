@@ -8,6 +8,8 @@ import controllers.VentaController;
 import core.View;
 import core.Model;
 import models.ItemCarrito;
+import models.PagoEfectivo;
+import models.PagoTarjetaCredito;
 import models.Pedido;
 
 @SuppressWarnings("serial")
@@ -19,7 +21,6 @@ public class PedidoView extends JPanel implements View {
     private JTable tabla;
     private DefaultTableModel modeloTabla;
     private JLabel lblTotal;
-    private JTextArea txtInfoPedido;
 
     public PedidoView(PedidoController pedidoController) {
         setLayout(null);
@@ -48,51 +49,77 @@ public class PedidoView extends JPanel implements View {
         txtDireccion.setBounds(100, 75, 300, 25);
         add(txtDireccion);
 
-        String[] columnas = { "Producto", "Cant.", "Precio (S/.)", "Subtotal (S/.)" };
+        // JRadioButton para seleccionar el método de pago
+        JLabel lblMetodoPago = new JLabel("Método de Pago:");
+        lblMetodoPago.setBounds(20, 110, 120, 25);
+        add(lblMetodoPago);
+
+        JRadioButton rbtnTarjeta = new JRadioButton("Tarjeta");
+        rbtnTarjeta.setBounds(140, 110, 100, 25);
+        add(rbtnTarjeta);
+
+        JRadioButton rbtnEfectivo = new JRadioButton("Efectivo");
+        rbtnEfectivo.setBounds(240, 110, 100, 25);
+        add(rbtnEfectivo);
+
+        // Agrupar los botones de opción
+        ButtonGroup grupoPago = new ButtonGroup();
+        grupoPago.add(rbtnTarjeta);
+        grupoPago.add(rbtnEfectivo);
+
+        // Tablita
+        String[] columnas = {"Producto", "Cant.", "Precio (S/.)", "Subtotal (S/.)"};
         modeloTabla = new DefaultTableModel(columnas, 0) {
-            public boolean isCellEditable(int r, int c) { return false; }
+            public boolean isCellEditable(int r, int c) {
+                return false;
+            }
         };
 
         tabla = new JTable(modeloTabla);
         JScrollPane scrollTabla = new JScrollPane(tabla);
-        scrollTabla.setBounds(20, 120, 700, 180);
+        scrollTabla.setBounds(20, 140, 700, 180); // Ajusté la posición aquí
         add(scrollTabla);
 
         lblTotal = new JLabel("TOTAL: S/ 0.00");
-        lblTotal.setBounds(20, 305, 200, 25);
+        lblTotal.setBounds(20, 330, 200, 25);
         add(lblTotal);
 
         JButton btnConfirmar = new JButton("Confirmar pedido + Emitir boleta");
-        btnConfirmar.setBounds(20, 340, 260, 30);
+        btnConfirmar.setBounds(20, 360, 260, 30);
         add(btnConfirmar);
 
         JButton btnRefrescar = new JButton("Refrescar carrito");
-        btnRefrescar.setBounds(300, 340, 160, 30);
+        btnRefrescar.setBounds(300, 360, 160, 30);
         add(btnRefrescar);
 
         JButton btnVolver = new JButton("Volver al menú principal");
-        btnVolver.setBounds(570, 340, 180, 30);
+        btnVolver.setBounds(570, 360, 180, 30);
         add(btnVolver);
-
-        txtInfoPedido = new JTextArea();
-        JScrollPane scrollInfo = new JScrollPane(txtInfoPedido);
-        scrollInfo.setBounds(20, 380, 700, 80);
-        add(scrollInfo);
 
         VentaController ventaController = StaticAccess.venta();
 
         cargarDesdeCarrito();
 
         btnConfirmar.addActionListener(e -> {
+            // Verifica si se seleccionó algún método de pago
+            if (rbtnTarjeta.isSelected()) {
+                pedidoController.setMetodoPago(new PagoTarjetaCredito()); // Asigna el tipo de pago
+            } else if (rbtnEfectivo.isSelected()) {
+                pedidoController.setMetodoPago(new PagoEfectivo()); // Asigna el tipo de pago
+            } else {
+                JOptionPane.showMessageDialog(null, "Por favor seleccione un método de pago.");
+                return; // Si no se ha seleccionado un método de pago, no procede
+            }
+
+            // Confirmar el pedido, pasando los datos correspondientes
             pedidoController.confirmarPedido(
-                txtCliente.getText(),
-                txtDireccion.getText(),
-                chkEnvio.isSelected()
+                    txtCliente.getText(),
+                    txtDireccion.getText(),
+                    chkEnvio.isSelected()
             );
 
             Pedido pedidoHecho = pedidoController.getPedidoActual();
             if (pedidoHecho != null) {
-                txtInfoPedido.setText(pedidoHecho.toString());
                 cargarDesdePedido(pedidoHecho);
             }
         });
@@ -110,7 +137,7 @@ public class PedidoView extends JPanel implements View {
 
         double total = 0.0;
         for (ItemCarrito item : ventaController.getCarrito().getItems()) {
-            Object[] fila = new Object[] {
+            Object[] fila = new Object[]{
                 item.getProducto().getNombreComercial(),
                 item.getCantidad(),
                 String.format("%.2f", item.getProducto().getPrecioUnitario()),
@@ -127,7 +154,7 @@ public class PedidoView extends JPanel implements View {
         double total = 0.0;
 
         for (ItemCarrito item : pedido.getItemsPedido()) {
-            Object[] fila = new Object[] {
+            Object[] fila = new Object[]{
                 item.getProducto().getNombreComercial(),
                 item.getCantidad(),
                 String.format("%.2f", item.getProducto().getPrecioUnitario()),
@@ -141,5 +168,6 @@ public class PedidoView extends JPanel implements View {
     }
 
     @Override
-    public void update(Model model, Object data) {}
+    public void update(Model model, Object data) {
+    }
 }
