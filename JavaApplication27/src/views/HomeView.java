@@ -19,11 +19,11 @@ public class HomeView extends JPanel implements View {
 
     public HomeView(HomeController controller) {
         setLayout(null);
-
+        //TITULO
         JLabel titulo = new JLabel("Ferretería Santa Rosa - Menú Principal");
         titulo.setBounds(20, 20, 400, 25);
         add(titulo);
-
+        //BOTONES
         JButton btnCatalogo = new JButton("Ver Catálogo");
         btnCatalogo.setBounds(20, 60, 160, 30);
         add(btnCatalogo);
@@ -43,7 +43,11 @@ public class HomeView extends JPanel implements View {
         JButton btnReporte = new JButton("Ver Reporte Sesión");
         btnReporte.setBounds(20, 220, 200, 30);
         add(btnReporte);
-
+        
+        JButton btnAlmacenes = new JButton("Ver Almacenes");
+        btnAlmacenes.setBounds(20, 260, 200, 30);
+        add(btnAlmacenes);
+        
         btnCatalogo.addActionListener(e
                 -> Controller.loadView("CatalogoView")
         );
@@ -63,6 +67,11 @@ public class HomeView extends JPanel implements View {
         btnReporte.addActionListener(e
                 -> Controller.loadView("ReporteView")
         );
+        
+        btnAlmacenes.addActionListener(e
+                ->Controller.loadView("AlmacenView")
+        );
+        
     }
 
     @Override

@@ -18,6 +18,7 @@ public class HomeController extends Controller{
     private final VentaController ventaController = new VentaController();
     private final PedidoController pedidoController = new PedidoController(ventaController);
     private final ReporteController reporteController = new ReporteController();
+    private final AlmacenController almacenController = new AlmacenController();
     @Override
     public void run() {
         Runnable init = () -> {
@@ -28,8 +29,8 @@ public class HomeController extends Controller{
             ventaController.run();
             pedidoController.run();
             reporteController.run();
-
-        
+            almacenController.run();
+            
             homeView = new HomeView(this);
             addView("HomeView", homeView);
 
