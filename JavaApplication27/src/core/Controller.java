@@ -7,12 +7,13 @@ import java.awt.CardLayout;
 import java.awt.Component;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.ImageIcon;
 /**
  *
  * @author gilma
  */
 public abstract class Controller {
-    protected static final JFrame mainFrame = new JFrame("Ferreteria Santa Rosa de Sigues");
+    public static final JFrame mainFrame = new JFrame("Ferreteria Santa Rosa de Sigues");
     private static final JPanel viewsPanel = new JPanel(new CardLayout());
 
     static {
@@ -20,6 +21,13 @@ public abstract class Controller {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(800, 500);
         mainFrame.setLocationRelativeTo(null);
+         try {
+        mainFrame.setIconImage(
+            new ImageIcon(Controller.class.getResource("/assets/logo.png")).getImage()
+        );
+    } catch (Exception e) {
+        System.out.println("NO SE PUDO CARGAR EL ICONO: " + e.getMessage());
+    }
     }
 
     public abstract void run();

@@ -5,6 +5,8 @@
 package Main;
 import controllers.HomeController;
 import javax.swing.UIManager;
+import javax.swing.ImageIcon;
+import core.Controller;
 /**
  *
  * @author gilma
@@ -15,6 +17,13 @@ public class main {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        try {
+            Controller.mainFrame.setIconImage(
+                new ImageIcon(Controller.class.getResource("/assets/logo.png")).getImage()
+            );
+        } catch (Exception e) {
+            System.out.println("ERROR cargando icono: " + e.getMessage());
         }
     HomeController app = new HomeController();
         app.run();
