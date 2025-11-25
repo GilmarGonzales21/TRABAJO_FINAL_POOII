@@ -1,4 +1,5 @@
 # TRABAJO_FINAL_POOII
 codigo completo para la elaboracion y culminación para el trabajo final
-<img width="3090" height="837" alt="jLVDRkCs4BxhAGXVgdJheBqQss1LMS4Qy8zX6q61eWU6cbM9IcHAqMxH8jS-G1-nJr995A7XJeGeBjONIpFVa3FV_93wK5jkxBagew_Ozw__6bJusoIhxKHJKVAwPXik5VihQctViQfvYRafwWKxMYDLyTFFDmjsqJAFdgEeWyxdT-mUZ04BHl9xBdWERC6aaaBo-2Ow (1)" src="https://github.com/user-attachments/assets/d039817d-9171-4d2b-8733-60d682a5ded9" />
+
 Diagrama de Clases
+<img width="2307" height="1035" alt="lLRDYjim4BxxAKGkcz3wiEtDB84GihJGXR1Rzgx84wDMbjoHdDBTxWFrEVfYbMBPLYmtMLEe3y7H_7_ppSWLPLzf0MIsLjAW4W9GpyXpGkp31DMQV50bz48lSiyRWhMSBp9oK3mFJjNEW0HSKqE5AfJJ-CIrkTcYocjcbe4gBH0AYbwYLc9D4RbHSwdA7K967WnoMRmbZ4h3" src="https://github.com/user-attachments/assets/45616b2f-add5-45f3-a9c4-ecafe003babf" />
