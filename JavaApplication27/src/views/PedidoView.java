@@ -11,55 +11,84 @@ import models.ItemCarrito;
 import models.PagoEfectivo;
 import models.PagoTarjetaCredito;
 import models.Pedido;
+import java.awt.*;
 
 @SuppressWarnings("serial")
 public class PedidoView extends JPanel implements View {
-
+    private final Color AMARILLO = new Color(247, 212, 0);
+    private final Color AMARILLO_HOVER = new Color(255, 230, 80);
+    private final Color AZUL = new Color(26, 34, 56);
     private JTextField txtCliente;
     private JTextField txtDireccion;
     private JCheckBox chkEnvio;
     private JTable tabla;
     private DefaultTableModel modeloTabla;
     private JLabel lblTotal;
-
+    private Image logo;
+    
     public PedidoView(PedidoController pedidoController) {
         setLayout(null);
+        try {
+            logo = new ImageIcon(getClass().getResource("/assets/logo.png")).getImage();
+        } catch (Exception e) {
+            System.out.println("ERROR cargando logo: " + e.getMessage());
+        }
 
         JLabel lblTitulo = new JLabel("Confirmar Pedido");
-        lblTitulo.setBounds(20, 10, 200, 20);
+        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 26));
+        lblTitulo.setForeground(AZUL);
+        lblTitulo.setBounds(20, 10, 400, 40);
         add(lblTitulo);
+        if (logo != null) {
+            Image small = logo.getScaledInstance(34, 34, Image.SCALE_SMOOTH);
+            JLabel logoTitulo = new JLabel(new ImageIcon(small));
+            logoTitulo.setBounds(380, 10, 50, 50);
+            add(logoTitulo);
+        }
 
         JLabel lblCliente = new JLabel("Cliente:");
-        lblCliente.setBounds(20, 40, 80, 25);
+        lblCliente.setForeground(AZUL);
+        lblCliente.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        lblCliente.setBounds(20,70,100,25);
         add(lblCliente);
-
         txtCliente = new JTextField();
-        txtCliente.setBounds(100, 40, 200, 25);
+        txtCliente.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        txtCliente.setBounds(110, 70, 250, 28);
         add(txtCliente);
 
         chkEnvio = new JCheckBox("¿Enviar a domicilio?");
-        chkEnvio.setBounds(320, 40, 200, 25);
+        chkEnvio.setBackground(AMARILLO);
+        chkEnvio.setForeground(AZUL);
+        chkEnvio.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        chkEnvio.setBounds(380,70, 200, 25);
         add(chkEnvio);
 
         JLabel lblDir = new JLabel("Dirección:");
-        lblDir.setBounds(20, 75, 80, 25);
+        lblDir.setForeground(AZUL);
+        lblDir.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        lblDir.setBounds(20,110,100, 25);
         add(lblDir);
-
         txtDireccion = new JTextField();
-        txtDireccion.setBounds(100, 75, 300, 25);
+        txtDireccion.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        txtDireccion.setBounds(110, 110, 450, 28);
         add(txtDireccion);
 
         // JRadioButton para seleccionar el método de pago
         JLabel lblMetodoPago = new JLabel("Método de Pago:");
-        lblMetodoPago.setBounds(20, 110, 120, 25);
+        lblMetodoPago.setForeground(AZUL);
+        lblMetodoPago.setBounds(20, 150, 150, 25);
         add(lblMetodoPago);
 
         JRadioButton rbtnTarjeta = new JRadioButton("Tarjeta");
-        rbtnTarjeta.setBounds(140, 110, 100, 25);
+        rbtnTarjeta.setBackground(AMARILLO);
+        rbtnTarjeta.setForeground(AZUL);
+        rbtnTarjeta.setBounds(160, 150, 100, 25);
         add(rbtnTarjeta);
 
         JRadioButton rbtnEfectivo = new JRadioButton("Efectivo");
-        rbtnEfectivo.setBounds(240, 110, 100, 25);
+        rbtnEfectivo.setBackground(AMARILLO);
+        rbtnEfectivo.setForeground(AZUL);
+        rbtnEfectivo.setBounds(260, 150, 100, 25);
         add(rbtnEfectivo);
 
         // Agrupar los botones de opción
@@ -70,30 +99,35 @@ public class PedidoView extends JPanel implements View {
         // Tablita
         String[] columnas = {"Producto", "Cant.", "Precio (S/.)", "Subtotal (S/.)"};
         modeloTabla = new DefaultTableModel(columnas, 0) {
+            
             public boolean isCellEditable(int r, int c) {
                 return false;
             }
         };
 
         tabla = new JTable(modeloTabla);
+        tabla.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        tabla.setRowHeight(22);
         JScrollPane scrollTabla = new JScrollPane(tabla);
-        scrollTabla.setBounds(20, 140, 700, 180); // Ajusté la posición aquí
+        scrollTabla.setBounds(20, 190, 760, 230); // Ajusté la posición aquí
         add(scrollTabla);
 
         lblTotal = new JLabel("TOTAL: S/ 0.00");
-        lblTotal.setBounds(20, 330, 200, 25);
+        lblTotal.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        lblTotal.setForeground(AZUL);
+        lblTotal.setBounds(20, 430, 260, 30);
         add(lblTotal);
 
-        JButton btnConfirmar = new JButton("Confirmar pedido + Emitir boleta");
-        btnConfirmar.setBounds(20, 360, 260, 30);
+        JButton btnConfirmar = crearBoton("Confirmar pedido + Emitir boleta");
+        btnConfirmar.setBounds(20, 470, 280, 40);
         add(btnConfirmar);
 
-        JButton btnRefrescar = new JButton("Refrescar carrito");
-        btnRefrescar.setBounds(300, 360, 160, 30);
+        JButton btnRefrescar = crearBoton("Refrescar carrito");
+        btnRefrescar.setBounds(320, 470, 200, 40);
         add(btnRefrescar);
 
-        JButton btnVolver = new JButton("Volver al menú principal");
-        btnVolver.setBounds(570, 360, 180, 30);
+        JButton btnVolver = crearBoton("Volver al menú principal");
+        btnVolver.setBounds(540, 470, 240, 40);
         add(btnVolver);
 
         VentaController ventaController = StaticAccess.venta();
@@ -130,7 +164,29 @@ public class PedidoView extends JPanel implements View {
             core.Controller.loadView("HomeView");
         });
     }
+     @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.setColor(AMARILLO);
+        g.fillRect(0, 0, getWidth(), getHeight());
+    }
+    private JButton crearBoton(String texto) {
+        JButton btn = new JButton(texto);
+        btn.setFont(new Font("Segoe UI", Font.BOLD, 15));
+        btn.setBackground(AMARILLO);
+        btn.setForeground(AZUL);
+        btn.setFocusPainted(false);
+        btn.setBorder(BorderFactory.createLineBorder(AZUL, 2));
 
+        btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) { btn.setBackground(AMARILLO_HOVER); }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) { btn.setBackground(AMARILLO); }
+        });
+
+        return btn;
+    }
     private void cargarDesdeCarrito() {
         VentaController ventaController = StaticAccess.venta();
         modeloTabla.setRowCount(0);
