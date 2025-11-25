@@ -9,11 +9,17 @@
     import models.Carrito;
     import models.ItemCarrito;
     import models.Producto;
+    import java.awt.*;
+    import java.awt.event.*;
     import java.util.List;
     import java.util.stream.Collectors;
 
     @SuppressWarnings("serial")
     public class CarritoView extends JPanel implements View {
+        
+        private final Color AMARILLO = new Color(247, 212, 0);
+        private final Color AMARILLO_HOVER = new Color(255, 230, 80);
+        private final Color AZUL = new Color(26, 34, 56);
 
         private JTable tabla;
         private DefaultTableModel modeloTabla;
@@ -21,20 +27,37 @@
         private JComboBox<String> comboProducto;
         private JTextField txtCantidad;
         private JLabel lblTotal;
+        private Image logo;
 
         public CarritoView(VentaController ventaController) {
             setLayout(null);
+            
+            try {
+            Image iconSmall = new ImageIcon(getClass().getResource("/assets/logo.png"))
+                    .getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
 
-            JLabel lblTitulo = new JLabel("Carrito / Cotización");
-            lblTitulo.setBounds(20, 10, 200, 20);
-            add(lblTitulo);
+            JLabel logoTitulo = new JLabel(new ImageIcon(iconSmall));
+            logoTitulo.setBounds(430, 5, 30, 50);
+            add(logoTitulo);
+
+        } catch (Exception e) {
+            System.out.println("ERROR cargando logo pequeño: " + e.getMessage());
+        }
+
+            JLabel titulo = new JLabel("Carrito / Cotización");
+            titulo.setFont(new Font("Segoe UI", Font.BOLD, 26));
+            titulo.setForeground(AZUL);
+            titulo.setBounds(20, 10, 400, 40);
+            add(titulo);
     //selecciona la categoria
             JLabel lblCat = new JLabel("Categoría:");
-            lblCat.setBounds(20, 40, 80, 25);
+            lblCat.setForeground(AZUL);
+            lblCat.setFont(new Font("Segoe UI", Font.BOLD, 14));
+            lblCat.setBounds(20, 60, 80, 25);
             add(lblCat);
 
-            comboCategoria = new JComboBox<>();
-            comboCategoria.setBounds(100, 40, 150, 25);
+            comboCategoria = crearCombo();
+            comboCategoria.setBounds(100, 60, 150, 25);
             add(comboCategoria);
 
             comboCategoria.addItem("Cemento");
@@ -44,24 +67,28 @@
 
     //seleciona el producto
             JLabel lblProd = new JLabel("Producto:");
-            lblProd.setBounds(270, 40, 80, 25);
+            lblProd.setForeground(AZUL);
+            lblProd.setFont(new Font("Segoe UI", Font.BOLD, 14));
+            lblProd.setBounds(270, 60, 80, 25);
             add(lblProd);
 
-            comboProducto = new JComboBox<>();
-            comboProducto.setBounds(340, 40, 200, 25);
+            comboProducto = crearCombo();
+            comboProducto.setBounds(340, 60, 200, 25);
             add(comboProducto);
 
     //la cantidad
             JLabel lblCant = new JLabel("Cantidad:");
-            lblCant.setBounds(560, 40, 70, 25);
+            lblCant.setForeground(AZUL);
+            lblCant.setFont(new Font("Segoe UI", Font.BOLD, 14));
+            lblCant.setBounds(560, 60, 90, 25);
             add(lblCant);
 
             txtCantidad = new JTextField("1");
-            txtCantidad.setBounds(630, 40, 50, 25);
+            txtCantidad.setBounds(650, 60, 50, 28);
             add(txtCantidad);
 
-            JButton btnAgregar = new JButton("Agregar");
-            btnAgregar.setBounds(690, 40, 90, 25);
+            JButton btnAgregar = crearBoton("Agregar");
+            btnAgregar.setBounds(720, 60, 140, 30);
             add(btnAgregar);
 
     //tablita
@@ -71,18 +98,20 @@
                 public boolean isCellEditable(int row, int col) { return false; }
             };
             tabla = new JTable(modeloTabla);
-
+            tabla.setFont(new Font("Segoe UI", Font.PLAIN, 13));
             JScrollPane scroll = new JScrollPane(tabla);
-            scroll.setBounds(20, 90, 760, 230);
+            scroll.setBounds(20, 110, 800, 250);
             add(scroll);
 
             lblTotal = new JLabel("TOTAL: S/ 0.00");
-            lblTotal.setBounds(20, 330, 200, 25);
+            lblTotal.setFont(new Font("Segoe UI", Font.BOLD, 18));
+            lblTotal.setForeground(AZUL);
+            lblTotal.setBounds(20, 370, 300, 30);
             add(lblTotal);
 
 
-            JButton btnVolver = new JButton("Volver al menú principal");
-            btnVolver.setBounds(600, 360, 180, 30);
+            JButton btnVolver = crearBoton("Volver al menú principal");
+            btnVolver.setBounds(650, 380, 230, 35);
             add(btnVolver);
 
 
@@ -101,7 +130,6 @@
                 }
             });
 
-
             btnVolver.addActionListener(e -> {
                 core.Controller.loadView("HomeView");
             });
@@ -109,7 +137,21 @@
             cargarProductosPorCategoria();
             actualizarTablaCarrito(ventaController.getCarrito());
         }
+        
+         @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
 
+        g.setColor(AMARILLO);
+        g.fillRect(0, 0, getWidth(), getHeight());
+
+        if (logo != null) {
+            int W = 260, H = 260;
+            int x = getWidth() - W - 40;
+            int y = (getHeight() - H) / 2;
+            g.drawImage(logo.getScaledInstance(W, H, Image.SCALE_SMOOTH), x, y, this);
+        }
+    }
         private void cargarProductosPorCategoria() {
             comboProducto.removeAllItems();
 
@@ -126,6 +168,14 @@
             }
         }
 
+        private JComboBox<String> crearCombo() {
+            JComboBox<String> combo = new JComboBox<>();
+            combo.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+            combo.setBackground(Color.WHITE);
+            combo.setForeground(AZUL);
+            combo.setBorder(BorderFactory.createLineBorder(AZUL, 2));
+            return combo;
+}
         private Producto productoActualSeleccionado() {
             String categoriaSel = (String) comboCategoria.getSelectedItem();
             String nombreProdSel = (String) comboProducto.getSelectedItem();
@@ -156,6 +206,30 @@
 
             lblTotal.setText("TOTAL: S/ " + String.format("%.2f", carrito.getTotal()));
         }
+        
+        private JButton crearBoton(String text) {
+            JButton btn = new JButton(text);
+            btn.setFont(new Font("Segoe UI", Font.BOLD, 15));
+            btn.setBackground(AMARILLO);
+            btn.setForeground(AZUL);
+            btn.setFocusPainted(false);
+            btn.setBorder(BorderFactory.createLineBorder(AZUL, 2));
+
+            btn.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btn.setBackground(AMARILLO_HOVER);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btn.setBackground(AMARILLO);
+            }
+        });
+
+        return btn;
+    }
 
         @Override
         public void update(Model model, Object data) {}

@@ -22,23 +22,22 @@ public class HomeView extends JPanel implements View {
     private final Color AMARILLO = new Color(247, 212, 0);
     private final Color AMARILLO_HOVER = new Color(255, 230, 80);
     private final Color AZUL = new Color(26, 34, 56);
-    private final Color FONDO = new Color(242, 242, 242);
+    private Image logo;
 
     public HomeView(HomeController controller) {
+        
         setLayout(null);
-        setBackground(FONDO);
-
+        try {
+            logo = new ImageIcon(getClass().getResource("/assets/logo.png")).getImage();
+        } catch (Exception e) {
+            System.out.println("ERROR cargando logo: " + e.getMessage());
+        }
+        
         JLabel titulo = new JLabel("Ferretería Santa Rosa - Menú Principal");
         titulo.setFont(new Font("Segoe UI", Font.BOLD, 22));
         titulo.setForeground(AZUL);
         titulo.setBounds(20, 20, 400, 25);
         add(titulo);
-        
-        ImageIcon logoImg = new ImageIcon(getClass().getResource("/assets/logo.png"));
-        Image scaled = logoImg.getImage().getScaledInstance(220, 220, Image.SCALE_SMOOTH);
-        JLabel logo = new JLabel(new ImageIcon(scaled));
-        logo.setBounds(350, 80, 300, 300);
-        add(logo);
 
         JButton btnCatalogo = crearBoton("Ver Catálogo");
         btnCatalogo.setBounds(20, 60, 160, 30);
@@ -89,11 +88,27 @@ public class HomeView extends JPanel implements View {
         btnAlmacen.addActionListener(e 
                 -> Controller.loadView("AlmacenView"));
     }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.setColor(AMARILLO);
+        g.fillRect(0, 0, getWidth(), getHeight());
+
+        if (logo != null) {
+            int logoWidth = 350;
+            int logoHeight = 350;
+            int x = getWidth() - logoWidth - 40; 
+            int y = (getHeight() - logoHeight) / 2;
+
+            g.drawImage(logo.getScaledInstance(logoWidth, logoHeight, Image.SCALE_SMOOTH),
+                    x, y, this);
+        }
+    }
     
     private JButton crearBoton(String texto) {
         JButton btn = new JButton(texto);
 
-            btn.setFont(new Font("Segoe UI", Font.BOLD, 15));
+            btn.setFont(new Font("Segoe UI", Font.BOLD, 16));
             btn.setBackground(AMARILLO);
             btn.setForeground(AZUL);
             btn.setFocusPainted(false);
@@ -112,7 +127,7 @@ public class HomeView extends JPanel implements View {
         });
         return btn;
     }                   
-    @Override
-    public void update(Model model, Object data) {
-    }
+            @Override
+            public void update(Model model, Object data) {
+            }
 }
