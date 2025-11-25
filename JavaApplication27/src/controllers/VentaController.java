@@ -70,4 +70,47 @@ public class VentaController extends Controller {
         reporteSesion.registrarVenta(boletaActual);
         loadView("BoletaView");
     }
+    public void exportarBoletaTXT() {
+    Boleta boleta = getBoletaActual();
+
+        if (boleta == null) {
+            System.out.println("No hay boleta para exportar.");
+            return;
+        }
+
+        try {
+            String ruta = "boletas/";
+            java.io.File carpeta = new java.io.File(ruta);
+            if (!carpeta.exists()) carpeta.mkdirs();
+            String archivo = ruta + "boleta_" + boleta.getNumeroBoleta() + ".txt";
+
+            java.io.PrintWriter pw = new java.io.PrintWriter(archivo, "UTF-8");
+
+            pw.println("=====================================");
+            pw.println("   FERRETERÍA SANTA ROSA DE SIGUES");
+            pw.println("=====================================");
+            pw.println("BOLETA N°: " + boleta.getNumeroBoleta());
+            pw.println("CLIENTE : " + boleta.getPedido().getCliente());
+            pw.println("DIRECCIÓN : " + boleta.getPedido().getDireccionEntrega());
+            pw.println("-------------------------------------");
+            pw.println("PRODUCTO\tCANT\tP.UNIT\tSUBTOTAL");
+            boleta.getPedido().getItemsPedido().forEach(item -> {
+                pw.println(
+                    item.getProducto().getNombreComercial() + "\t" +
+                    item.getCantidad() + "\t" +
+                    item.getProducto().getPrecioUnitario() + "\t" +
+                    item.getSubtotal()
+                );
+            });
+            pw.println("-------------------------------------");
+            pw.println("TOTAL A PAGAR: S/ " + boleta.getTotalPagar());
+            pw.println("=====================================");
+            pw.println("Gracias por su compra.");
+            pw.close();
+            java.awt.Desktop.getDesktop().open(new java.io.File(archivo));
+            System.out.println("Boleta exportada correctamente: " + archivo);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+    }
+}
 }

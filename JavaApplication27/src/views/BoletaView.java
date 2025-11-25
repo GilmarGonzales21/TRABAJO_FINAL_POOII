@@ -63,6 +63,13 @@ public class BoletaView extends JPanel implements View {
                 txtBoleta.setText("No hay boleta emitida aún.");
             }
         });
+        JButton btnExportar = new JButton("Exportar .TXT");
+        btnExportar.setBounds(200, 410, 180, 30);
+        add(btnExportar);
+        btnExportar.addActionListener(e -> {
+        StaticAccess.venta().exportarBoletaTXT();
+        JOptionPane.showMessageDialog(null, "Boleta exportada correctamente.");
+    });
          cargarBoleta();
     }
         @Override

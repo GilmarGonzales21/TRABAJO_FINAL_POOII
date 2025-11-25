@@ -1,0 +1,14 @@
+=====================================
+   FERRETERÍA SANTA ROSA DE SIGUES
+=====================================
+BOLETA N°: 1000
+CLIENTE : pepe
+DIRECCIÓN : av. andahuylas
+-------------------------------------
+PRODUCTO	CANT	P.UNIT	SUBTOTAL
+Cemento Andino	20	29.5	590.0
+Cemento APU	40	27.5	1100.0
+-------------------------------------
+TOTAL A PAGAR: S/ 1690.0
+=====================================
+Gracias por su compra.
