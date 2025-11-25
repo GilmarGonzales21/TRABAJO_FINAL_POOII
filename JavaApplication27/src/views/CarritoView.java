@@ -33,15 +33,9 @@
             setLayout(null);
             
             try {
-            Image iconSmall = new ImageIcon(getClass().getResource("/assets/logo.png"))
-                    .getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
-
-            JLabel logoTitulo = new JLabel(new ImageIcon(iconSmall));
-            logoTitulo.setBounds(430, 5, 30, 50);
-            add(logoTitulo);
-
+            logo = new ImageIcon(getClass().getResource("/assets/logo.png")).getImage();
         } catch (Exception e) {
-            System.out.println("ERROR cargando logo pequeño: " + e.getMessage());
+            System.out.println("ERROR cargando logo: " + e.getMessage());
         }
 
             JLabel titulo = new JLabel("Carrito / Cotización");
@@ -49,6 +43,12 @@
             titulo.setForeground(AZUL);
             titulo.setBounds(20, 10, 400, 40);
             add(titulo);
+            if (logo != null) {
+            Image iconSmall = logo.getScaledInstance(38, 38, Image.SCALE_SMOOTH);
+            JLabel logoTitulo = new JLabel(new ImageIcon(iconSmall));
+            logoTitulo.setBounds(350, 8, 40, 40);
+            add(logoTitulo);
+            }
     //selecciona la categoria
             JLabel lblCat = new JLabel("Categoría:");
             lblCat.setForeground(AZUL);
@@ -138,7 +138,7 @@
             actualizarTablaCarrito(ventaController.getCarrito());
         }
         
-         @Override
+          @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
@@ -152,6 +152,7 @@
             g.drawImage(logo.getScaledInstance(W, H, Image.SCALE_SMOOTH), x, y, this);
         }
     }
+
         private void cargarProductosPorCategoria() {
             comboProducto.removeAllItems();
 
@@ -169,12 +170,12 @@
         }
 
         private JComboBox<String> crearCombo() {
-            JComboBox<String> combo = new JComboBox<>();
-            combo.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-            combo.setBackground(Color.WHITE);
-            combo.setForeground(AZUL);
-            combo.setBorder(BorderFactory.createLineBorder(AZUL, 2));
-            return combo;
+        JComboBox<String> combo = new JComboBox<>();
+        combo.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        combo.setBackground(Color.WHITE);
+        combo.setForeground(AZUL);
+        combo.setBorder(BorderFactory.createLineBorder(AZUL, 2));
+        return combo;
 }
         private Producto productoActualSeleccionado() {
             String categoriaSel = (String) comboCategoria.getSelectedItem();

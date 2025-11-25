@@ -14,20 +14,40 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
 import models.Almacen;
+import java.awt.*;
+import javax.swing.*;
 /**
  *
  * @author gilma
  */
+@SuppressWarnings("serial")
 public class AlmacenView extends JPanel implements View{
+    private final Color AMARILLO = new Color(247, 212, 0);
+    private final Color AZUL = new Color(26, 34, 56);
+    private final Color AMARILLO_HOVER = new Color(255, 230, 80);
     private JTable tabla;
     private DefaultTableModel modeloTabla;
+    private Image logo;
 
     public AlmacenView(AlmacenController controller) {
         setLayout(null);
+        try {
+            logo = new ImageIcon(getClass().getResource("/assets/logo.png")).getImage();
+        } catch (Exception e) {
+            System.out.println("ERROR cargando logo: " + e.getMessage());
+        }
         
         JLabel lblTitulo = new JLabel("Listado de Almacenes");
-        lblTitulo.setBounds(20, 20, 200, 25);
+        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 28));
+        lblTitulo.setForeground(AZUL);
+        lblTitulo.setBounds(20, 20, 380, 45);
         add(lblTitulo);
+        if (logo != null) {
+            Image small = logo.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+            JLabel logoTitulo = new JLabel(new ImageIcon(small));
+            logoTitulo.setBounds(410, 15, 50, 50);
+            add(logoTitulo);
+        }
 
         String[] columnas = { "Nombre", "Dirección", "Teléfono" };
         modeloTabla = new DefaultTableModel(columnas, 0) {
@@ -51,6 +71,12 @@ public class AlmacenView extends JPanel implements View{
         });
 
         cargarAlmacenes(controller.getAlmacenes());
+    }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.setColor(AMARILLO);
+        g.fillRect(0, 0, getWidth(), getHeight());
     }
 
     private void cargarAlmacenes(List<Almacen> almacenes) {
